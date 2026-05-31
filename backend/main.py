@@ -1,9 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from pathlib import Path
+from backend.pdf_reader import extract_text
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
     version="0.0.1"
 )
+
+UPLOAD_DIR = Path("backend/uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
 
 @app.get("/")
 def root():
@@ -15,4 +20,45 @@ def root():
 def health():
     return {
         "status": "ok"
+    }
+
+@app.post("/upload")
+async def upload_pdf(file: UploadFile = File(...)):
+    file_path = UPLOAD_DIR / file.filename
+
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    return {
+        "filename": file.filename,
+        "status": "uploaded"
+    }
+
+@app.get("/documents")
+def list_documents():
+    return {
+        "documents": [
+            file.name
+            for file in UPLOAD_DIR.iterdir()
+            if file.is_file() and file.suffix == ".pdf"
+        ]
+    }
+
+@app.get("/documents/{filename}")
+def read_document(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    return {
+        "filename": filename,
+        "characters": len(text),
+        "preview": text[:1000]
     }

@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from pathlib import Path
 from backend.pdf_reader import extract_text
 from backend.chunker import chunk_text
+from backend.embedder import create_embeddings
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -83,4 +84,28 @@ def get_chunks(filename: str):
         "filename": filename,
         "total_chunks": len(chunks),
         "chunks": chunks[:5]
+    }
+
+@app.get("/documents/{filename}/embeddings")
+def get_embeddings(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    embeddings = create_embeddings(chunks)
+
+    return {
+        "filename": filename,
+        "total_chunks": len(chunks),
+        "embedding_dimension": len(embeddings[0]),
+        "sample_embedding": embeddings[0][:10]
     }

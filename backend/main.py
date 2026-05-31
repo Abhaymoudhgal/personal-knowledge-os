@@ -4,6 +4,7 @@ from backend.pdf_reader import extract_text
 from backend.chunker import chunk_text
 from backend.embedder import create_embeddings
 from backend.search import search_chunks
+from backend.llm import ask_llm
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -84,7 +85,7 @@ def get_chunks(filename: str):
     return {
         "filename": filename,
         "total_chunks": len(chunks),
-        "chunks": chunks[:5]
+        "chunks": chunks
     }
 
 @app.get("/documents/{filename}/embeddings")
@@ -137,4 +138,42 @@ def search_document(
     return {
         "query": query,
         "results": results
+    }
+
+@app.get("/ask/{filename}")
+def ask_document(filename: str, question: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    results = search_chunks(
+        question,
+        chunks
+    )
+
+    context = "\n\n".join(
+        [chunk for chunk, score in results]
+    )
+
+    print("========== CONTEXT ==========")
+    print(context)
+    print("=============================")
+
+    answer = ask_llm(
+        context,
+        question
+    )
+
+    return {
+        "question": question,
+        "answer": answer
     }

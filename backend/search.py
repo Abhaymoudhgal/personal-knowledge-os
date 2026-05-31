@@ -27,9 +27,12 @@ def search_chunks(query, chunks):
     ):
 
         similarity = cosine_similarity(
-            query_embedding,
-            embedding
+        query_embedding,
+        embedding
         )
+
+        if query.lower() in chunk.lower():
+            similarity += 0.5
 
         scores.append(
             (chunk, float(similarity))
@@ -40,4 +43,31 @@ def search_chunks(query, chunks):
         reverse=True
     )
 
-    return scores[:3]
+    for chunk, score in scores:
+        print("\nSCORE:", score)
+        print(chunk[:200])
+        print("=" * 50)
+
+    return scores[:10]
+
+from pathlib import Path
+
+from backend.pdf_reader import extract_text
+from backend.chunker import chunk_text
+
+
+UPLOAD_DIR = Path("backend/uploads")
+
+
+def search_document(filename, query):
+
+    file_path = UPLOAD_DIR / filename
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    return search_chunks(
+        query,
+        chunks
+    )

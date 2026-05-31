@@ -3,6 +3,7 @@ from pathlib import Path
 from backend.pdf_reader import extract_text
 from backend.chunker import chunk_text
 from backend.embedder import create_embeddings
+from backend.search import search_chunks
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -108,4 +109,32 @@ def get_embeddings(filename: str):
         "total_chunks": len(chunks),
         "embedding_dimension": len(embeddings[0]),
         "sample_embedding": embeddings[0][:10]
+    }
+
+@app.get("/documents/{filename}/search")
+def search_document(
+    filename: str,
+    query: str
+):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    results = search_chunks(
+        query,
+        chunks
+    )
+
+    return {
+        "query": query,
+        "results": results
     }

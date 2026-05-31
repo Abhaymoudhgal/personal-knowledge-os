@@ -29,3 +29,23 @@ Enable users to chat with their documents, notes, resumes, research papers, and 
 
 ### V5
 - Multi-Agent Reasoning
+
+## Tech Stack
+
+### Backend
+- Python
+- FastAPI
+
+### AI
+- Gemini API
+- Sentence Transformers
+
+### Database
+- Qdrant
+- SQLite
+- Neo4j
+
+### DevOps
+- Git
+- Docker
+- GitHub

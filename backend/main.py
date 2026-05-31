@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pathlib import Path
 from backend.pdf_reader import extract_text
+from backend.chunker import chunk_text
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -61,4 +62,25 @@ def read_document(filename: str):
         "filename": filename,
         "characters": len(text),
         "preview": text[:1000]
+    }
+
+@app.get("/documents/{filename}/chunks")
+def get_chunks(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    return {
+        "filename": filename,
+        "total_chunks": len(chunks),
+        "chunks": chunks[:5]
     }

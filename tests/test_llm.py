@@ -1,4 +1,4 @@
-from backend.llm import ask_llm
+from backend.services.llm import ask_llm
 
 response = ask_llm(
     "Abhay worked at DRDO.",

@@ -1,6 +1,6 @@
 import numpy as np
 
-from backend.embedder import create_embeddings
+from backend.services.embedder import create_embeddings
 
 
 def cosine_similarity(a, b):
@@ -52,8 +52,8 @@ def search_chunks(query, chunks):
 
 from pathlib import Path
 
-from backend.pdf_reader import extract_text
-from backend.chunker import chunk_text
+from backend.services.pdf_reader import extract_text
+from backend.services.chunker import chunk_text
 
 
 UPLOAD_DIR = Path("backend/uploads")

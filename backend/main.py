@@ -1,10 +1,10 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pathlib import Path
-from backend.pdf_reader import extract_text
-from backend.chunker import chunk_text
-from backend.embedder import create_embeddings
-from backend.search import search_chunks
-from backend.llm import ask_llm
+from backend.services.pdf_reader import extract_text
+from backend.services.chunker import chunk_text
+from backend.services.embedder import create_embeddings
+from backend.services.search import search_chunks
+from backend.services.llm import ask_llm
 
 app = FastAPI(
     title="Personal Knowledge Operating System",

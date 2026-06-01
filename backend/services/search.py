@@ -1,6 +1,8 @@
 import numpy as np
 
 from backend.services.embedder import create_embeddings
+from backend.vector_store import load_embeddings
+from pathlib import Path
 
 
 def cosine_similarity(a, b):
@@ -50,24 +52,43 @@ def search_chunks(query, chunks):
 
     return scores[:10]
 
-from pathlib import Path
-
-from backend.services.pdf_reader import extract_text
-from backend.services.chunker import chunk_text
-
-
-UPLOAD_DIR = Path("backend/uploads")
-
-
 def search_document(filename, query):
 
-    file_path = UPLOAD_DIR / filename
+    data = load_embeddings(filename)
 
-    text = extract_text(file_path)
+    if data is None:
+        return []
 
-    chunks = chunk_text(text)
+    chunks = data["chunks"]
 
-    return search_chunks(
-        query,
-        chunks
+    chunk_embeddings = data["embeddings"]
+
+    query_embedding = create_embeddings(
+        [query]
+    )[0]
+
+    scores = []
+
+    for chunk, embedding in zip(
+        chunks,
+        chunk_embeddings
+    ):
+
+        similarity = cosine_similarity(
+            query_embedding,
+            embedding
+        )
+
+        if query.lower() in chunk.lower():
+            similarity += 0.5
+
+        scores.append(
+            (chunk, float(similarity))
+        )
+
+    scores.sort(
+        key=lambda x: x[1],
+        reverse=True
     )
+
+    return scores[:10]

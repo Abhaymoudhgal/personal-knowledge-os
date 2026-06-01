@@ -12,8 +12,10 @@ from backend.vector_store import (
 from backend.services.retriever import (
     search_all_documents
 )
-
 from backend.knowledge_base import get_all_documents
+from backend.services.knowledge_qa import (
+    ask_knowledge_base
+)
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -229,4 +231,16 @@ def search_knowledge_base(query: str):
     return {
         "query": query,
         "results": results
+    }
+
+@app.get("/ask-kb")
+def ask_kb(question: str):
+
+    answer = ask_knowledge_base(
+        question
+    )
+
+    return {
+        "question": question,
+        "answer": answer
     }

@@ -5,6 +5,10 @@ from backend.services.chunker import chunk_text
 from backend.services.embedder import create_embeddings
 from backend.services.search import search_chunks
 from backend.services.llm import ask_llm
+from backend.vector_store import (
+    save_embeddings,
+    load_embeddings
+)
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -176,4 +180,31 @@ def ask_document(filename: str, question: str):
     return {
         "question": question,
         "answer": answer
+    }
+
+@app.post("/documents/{filename}/index")
+def index_document(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    embeddings = create_embeddings(chunks)
+
+    save_embeddings(
+        filename,
+        chunks,
+        embeddings
+    )
+
+    return {
+        "message": "Document indexed"
     }

@@ -9,6 +9,7 @@ from backend.vector_store import (
     save_embeddings,
     load_embeddings
 )
+from backend.knowledge_base import get_all_documents
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -207,4 +208,11 @@ def index_document(filename: str):
 
     return {
         "message": "Document indexed"
+    }
+
+@app.get("/documents")
+def list_documents():
+
+    return {
+        "documents": get_all_documents()
     }

@@ -9,6 +9,10 @@ from backend.vector_store import (
     save_embeddings,
     load_embeddings
 )
+from backend.services.retriever import (
+    search_all_documents
+)
+
 from backend.knowledge_base import get_all_documents
 
 app = FastAPI(
@@ -215,4 +219,14 @@ def list_documents():
 
     return {
         "documents": get_all_documents()
+    }
+
+@app.get("/search")
+def search_knowledge_base(query: str):
+
+    results = search_all_documents(query)
+
+    return {
+        "query": query,
+        "results": results
     }

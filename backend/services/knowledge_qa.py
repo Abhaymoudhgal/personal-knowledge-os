@@ -8,7 +8,7 @@ from backend.services.memory import (
 )
 
 def ask_knowledge_base(question):
-    
+
     add_message(
         "user",
         question
@@ -56,9 +56,28 @@ Knowledge Base Context:
         question
     )
 
+    sources = []
+
+    for item in results[:5]:
+
+        sources.append(
+            {
+                "document":
+                    item["document"],
+                "score":
+                    round(
+                        item["score"],
+                        4
+                    )
+            }
+        )
+
     add_message(
         "assistant",
         answer
     )
 
-    return answer
+    return {
+        "answer": answer,
+        "sources": sources
+    }

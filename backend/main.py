@@ -179,15 +179,16 @@ def ask_document(filename: str, question: str):
     print(context)
     print("=============================")
 
-    answer = ask_llm(
+    result = ask_llm(
         context,
         question
     )
 
     return {
-        "question": question,
-        "answer": answer
-    }
+    "question": question,
+    "answer": result["answer"],
+    "sources": result["sources"]
+}
 
 @app.post("/documents/{filename}/index")
 def index_document(filename: str):
@@ -235,13 +236,12 @@ def search_knowledge_base(query: str):
 @app.get("/ask-kb")
 def ask_kb(question: str):
 
-    answer = ask_knowledge_base(
-        question
-    )
+    result = ask_knowledge_base(question)
 
     return {
         "question": question,
-        "answer": answer
+        "answer": result["answer"],
+        "sources": result["sources"]
     }
 
 @app.get("/history")

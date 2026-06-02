@@ -16,6 +16,13 @@ from backend.knowledge_base import get_all_documents
 from backend.services.knowledge_qa import (
     ask_knowledge_base
 )
+from backend.services.memory import (
+    get_history,
+    clear_history
+)
+
+
+
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
@@ -243,4 +250,20 @@ def ask_kb(question: str):
     return {
         "question": question,
         "answer": answer
+    }
+
+@app.get("/history")
+def chat_history():
+
+    return {
+        "history": get_history()
+    }
+
+@app.delete("/history")
+def delete_history():
+
+    clear_history()
+
+    return {
+        "message": "History cleared"
     }

@@ -23,7 +23,9 @@ from backend.services.memory import (
 from backend.services.document_registry import (
     add_document
 )
-
+from backend.services.document_registry import (
+    get_document
+)
 
 
 app = FastAPI(
@@ -293,4 +295,30 @@ def delete_document_api(filename: str):
 
     return {
         "message": f"{filename} deleted"
-    }   
+    } 
+
+@app.get("/documents/{filename}/stats")
+def document_stats(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    text = extract_text(file_path)
+
+    chunks = chunk_text(text)
+
+    doc = get_document(filename)
+
+    return {
+        "filename": filename,
+        "characters": len(text),
+        "words": len(text.split()),
+        "chunks": len(chunks),
+        "indexed": doc["indexed"] if doc else False,
+        "uploaded_at": doc["uploaded_at"] if doc else None
+    }  

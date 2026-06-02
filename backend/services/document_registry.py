@@ -72,3 +72,14 @@ def delete_document(filename):
     ]
 
     save_registry(registry)
+
+def get_document(filename):
+
+    registry = load_registry()
+
+    for doc in registry:
+
+        if doc["filename"] == filename:
+            return doc
+
+    return None

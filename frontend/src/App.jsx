@@ -59,12 +59,21 @@ const uploadFile = async () => {
 
     try {
 
-      await axios.post(
+      const uploadResponse = await axios.post(
         "http://127.0.0.1:8000/upload",
         formData
       );
 
-      alert("Upload successful");
+      const filename =
+        uploadResponse.data.filename;
+
+      await axios.post(
+        `http://127.0.0.1:8000/documents/${filename}/index`
+      );
+
+      alert(
+        "Upload and indexing successful"
+      );
 
       loadDocuments();
 

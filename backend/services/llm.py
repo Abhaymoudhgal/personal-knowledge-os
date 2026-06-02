@@ -32,6 +32,25 @@ Question:
 Answer:
 """
 
-    response = model.generate_content(prompt)
+    try:
 
-    return response.text
+        response = model.generate_content(
+            prompt
+        )
+
+        return response.text
+
+    except Exception as e:
+
+        print(
+            f"LLM ERROR: {e}"
+        )
+
+        return """
+Gemini quota exceeded.
+
+Your vector search and retrieval are working correctly,
+but the language model is temporarily unavailable.
+
+Please wait a few minutes or use a different Gemini API key.
+"""

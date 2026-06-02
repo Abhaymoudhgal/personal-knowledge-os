@@ -102,5 +102,57 @@
   {
     "role": "assistant",
     "content": "Abhay interned at:\n*   \"Defence Research and Development Organisation (DRDO), Bengaluru\"\n*   \"Bharat Electronic Limited (BEL), Bengaluru\""
+  },
+  {
+    "role": "user",
+    "content": "Where did Abhay intern?"
+  },
+  {
+    "role": "assistant",
+    "content": "Abhay interned at:\n*   \"Defence Research and Development Organisation (DRDO), Bengaluru\"\n*   \"Bharat Electronic Limited (BEL), Bengaluru\""
+  },
+  {
+    "role": "user",
+    "content": "What did he do there?"
+  },
+  {
+    "role": "assistant",
+    "content": "At Defence Research and Development Organisation (DRDO), Bengaluru, Abhay:\n*   \"Designed and implemented algorithms to classify flying objects (missile, satellite, aircraft, unknown) using Belief Theory (Transferable Belief Model).\"\n*   \"Worked extensively on radar trajectory data processing, trajectory modeling, feature extraction, and uncertainty handling using MATLAB and Python.\"\n*   \"Improved classification robustness through belief mass function modeling and force-based trajectory analysis.\"\n\nAt Bharat Electronic Limited (BEL), Bengaluru, Abhay:\n*   \"Applied machine learning techniques to solve leaf disease detection, working on data preprocessing, model development, and evaluation pipelines.\"\n*   \"Gained hands -on exposure to software development workflows in an R&D environment, strengthening analytical thinking, problem-solving, and collaborative development skills.\""
+  },
+  {
+    "role": "user",
+    "content": "for how long he has done it?"
+  },
+  {
+    "role": "assistant",
+    "content": "Abhay interned at:\n*   Defence Research and Development Organisation (DRDO), Bengaluru from \"Feb 2025 - May 2025\".\n*   Bharat Electronic Limited (BEL), Bengaluru from \"Oct 2023 - Nov 2023\"."
+  },
+  {
+    "role": "user",
+    "content": " Where did Abhay intern?"
+  },
+  {
+    "role": "user",
+    "content": "Where did Abhay intern?"
+  },
+  {
+    "role": "user",
+    "content": "Where did Abhay intern?"
+  },
+  {
+    "role": "user",
+    "content": "Where did Abhay intern?"
+  },
+  {
+    "role": "assistant",
+    "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
+  },
+  {
+    "role": "user",
+    "content": "Where did Abhay intern?"
+  },
+  {
+    "role": "assistant",
+    "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
   }
 ]

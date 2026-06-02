@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect,useRef } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -7,6 +7,16 @@ function App() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  }, [messages]);
 
   const askQuestion = async () => {
 
@@ -94,6 +104,8 @@ function App() {
           </div>
 
         )}
+
+        <div ref={bottomRef}></div>
 
       </div>
 

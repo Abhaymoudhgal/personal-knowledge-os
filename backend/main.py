@@ -20,7 +20,9 @@ from backend.services.memory import (
     get_history,
     clear_history
 )
-
+from backend.services.document_registry import (
+    add_document
+)
 
 
 
@@ -56,15 +58,6 @@ async def upload_pdf(file: UploadFile = File(...)):
         "status": "uploaded"
     }
 
-@app.get("/documents")
-def list_documents():
-    return {
-        "documents": [
-            file.name
-            for file in UPLOAD_DIR.iterdir()
-            if file.is_file() and file.suffix == ".pdf"
-        ]
-    }
 
 @app.get("/documents/{filename}")
 def read_document(filename: str):
@@ -219,16 +212,15 @@ def index_document(filename: str):
         embeddings
     )
 
+    add_document(
+        filename,
+        len(chunks)
+    )
+
     return {
         "message": "Document indexed"
     }
 
-@app.get("/documents")
-def list_documents():
-
-    return {
-        "documents": get_all_documents()
-    }
 
 @app.get("/search")
 def search_knowledge_base(query: str):
@@ -267,3 +259,15 @@ def delete_history():
     return {
         "message": "History cleared"
     }
+
+@app.get("/documents")
+def list_documents():
+
+    from backend.services.document_registry import (
+        get_documents
+    )
+
+    return {
+        "documents":
+            get_documents()
+    }   

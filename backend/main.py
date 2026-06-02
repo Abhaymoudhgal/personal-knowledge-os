@@ -26,6 +26,10 @@ from backend.services.document_registry import (
 from backend.services.document_registry import (
     get_document
 )
+from backend.services.dashboard import (
+    get_dashboard_stats
+)
+
 
 
 app = FastAPI(
@@ -322,3 +326,8 @@ def document_stats(filename: str):
         "indexed": doc["indexed"] if doc else False,
         "uploaded_at": doc["uploaded_at"] if doc else None
     }  
+
+@app.get("/dashboard")
+def dashboard():
+
+    return get_dashboard_stats()

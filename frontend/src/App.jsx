@@ -7,8 +7,10 @@ function App() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [documents, setDocuments] = useState([]);
 
   const bottomRef = useRef(null);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
 
@@ -17,6 +19,62 @@ function App() {
     });
 
   }, [messages]);
+
+  useEffect(() => {
+
+    loadDocuments();
+
+  }, []);
+
+  const loadDocuments = async () => {
+
+    try {
+
+      const response = await axios.get(
+        "http://127.0.0.1:8000/documents"
+      );
+
+      setDocuments(
+        response.data.documents
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
+
+const uploadFile = async () => {
+
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append(
+      "file",
+      file
+    );
+
+    try {
+
+      await axios.post(
+        "http://127.0.0.1:8000/upload",
+        formData
+      );
+
+      alert("Upload successful");
+
+      loadDocuments();
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
 
   const askQuestion = async () => {
 
@@ -70,7 +128,39 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className="layout">
+      <div className="sidebar">
+        <h2>Documents</h2>
+
+                <input
+          type="file"
+          accept=".pdf"
+          onChange={(e) =>
+            setFile(e.target.files[0])
+          }
+        />
+
+        <button
+          onClick={uploadFile}
+        >
+          Upload
+        </button> 
+        {
+          documents.map((doc, index) => (
+
+            <div
+              key={index}
+              className="document-item"
+            >
+              📄 {doc.filename}
+            </div>
+
+          ))
+        }
+
+      </div>
+
+      <div className="main-content">
 
       <h1>PKOS</h1>
 
@@ -166,8 +256,9 @@ function App() {
         </button>
 
       </div>
-
+      
     </div>
+  </div>
   );
 }
 

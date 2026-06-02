@@ -81,3 +81,27 @@ button {
   font-size: 0.85rem;
   opacity: 0.85;
 }
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  border-right: 1px solid #444;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.document-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #1e293b;
+}

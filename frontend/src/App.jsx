@@ -6,6 +6,7 @@ function App() {
 
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const askQuestion = async () => {
 
@@ -22,6 +23,8 @@ function App() {
     ]);
 
     try {
+
+      setLoading(true);
 
       const response = await axios.get(
         "http://127.0.0.1:8000/ask-kb",
@@ -42,9 +45,13 @@ function App() {
         aiMessage
       ]);
 
+      setLoading(false);
+
     } catch (error) {
 
       console.error(error);
+
+      setLoading(false);
 
     }
 
@@ -78,6 +85,16 @@ function App() {
 
         ))}
 
+        {loading && (
+
+          <div className="message assistant">
+
+            PKOS is thinking...
+
+          </div>
+
+        )}
+
       </div>
 
       <div className="input-row">
@@ -87,6 +104,15 @@ function App() {
           onChange={(e) =>
             setQuestion(e.target.value)
           }
+          onKeyDown={(e) => {
+
+            if (e.key === "Enter") {
+
+              askQuestion();
+
+            }
+
+          }}
           placeholder="Ask something..."
         />
 

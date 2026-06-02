@@ -1,11 +1,18 @@
 from backend.services.retriever import (
     search_all_documents
 )
-
 from backend.services.llm import ask_llm
-
+from backend.services.memory import (
+    add_message,
+    get_history
+)
 
 def ask_knowledge_base(question):
+    
+    add_message(
+        "user",
+        question
+    )
 
     results = search_all_documents(question)
 
@@ -20,6 +27,15 @@ def ask_knowledge_base(question):
     #     print(item["chunk"][:300])
     #     print("=" * 50)
 
+    history = get_history()
+
+    memory_context = "\n".join(
+        [
+            f"{msg['role']}: {msg['content']}"
+            for msg in history[-10:]
+        ]
+    )
+
     context = "\n\n".join(
         [
             item["chunk"]
@@ -27,9 +43,22 @@ def ask_knowledge_base(question):
         ]
     )
 
+    full_context = f"""
+Conversation History:
+{memory_context}
+
+Knowledge Base Context:
+{context}
+"""
+
     answer = ask_llm(
-        context,
+        full_context,
         question
+    )
+
+    add_message(
+        "assistant",
+        answer
     )
 
     return answer

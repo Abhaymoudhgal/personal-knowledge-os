@@ -270,4 +270,27 @@ def list_documents():
     return {
         "documents":
             get_documents()
+    }
+
+@app.delete("/documents/{filename}")
+def delete_document_api(filename: str):
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    file_path.unlink()
+
+    from backend.services.document_registry import (
+        delete_document
+    )
+
+    delete_document(filename)
+
+    return {
+        "message": f"{filename} deleted"
     }   

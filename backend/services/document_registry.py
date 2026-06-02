@@ -60,3 +60,15 @@ def add_document(
 def get_documents():
 
     return load_registry()
+
+def delete_document(filename):
+
+    registry = load_registry()
+
+    registry = [
+        doc
+        for doc in registry
+        if doc["filename"] != filename
+    ]
+
+    save_registry(registry)

@@ -32,13 +32,21 @@ from backend.services.dashboard import (
 from backend.services.document_discovery import (
     find_relevant_documents
 )
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
 app = FastAPI(
     title="Personal Knowledge Operating System",
     version="0.0.1"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 UPLOAD_DIR = Path("backend/uploads")

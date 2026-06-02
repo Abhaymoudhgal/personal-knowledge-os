@@ -11,6 +11,7 @@ function App() {
 
   const bottomRef = useRef(null);
   const [file, setFile] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
 
@@ -138,7 +139,22 @@ const uploadFile = async () => {
 
   return (
     <div className="layout">
-      <div className="sidebar">
+
+      <button
+        className="toggle-btn"
+        onClick={() =>
+          setSidebarOpen(!sidebarOpen)
+        }
+      >
+        ☰
+      </button>
+      <div
+        className={
+          sidebarOpen
+            ? "sidebar"
+            : "sidebar closed"
+        }
+      >
         <h2>Documents</h2>
 
                 <input
@@ -160,8 +176,14 @@ const uploadFile = async () => {
             <div
               key={index}
               className="document-item"
+              title={doc.filename}
             >
-              📄 {doc.filename}
+              📄 {
+                doc.filename.length > 25
+                  ? doc.filename.substring(0,25)
+                    + "..."
+                  : doc.filename
+              }
             </div>
 
           ))
@@ -174,6 +196,24 @@ const uploadFile = async () => {
       <h1>PKOS</h1>
 
       <div className="chat-box">
+
+        {
+          messages.length === 0 && (
+            <div className="empty-state">
+              <h2>Welcome to PKOS</h2>
+
+              <p>
+                Ask questions about your documents.
+              </p>
+
+              <div className="examples">
+                <div>• Summarize my resume</div>
+                <div>• What internships have I completed?</div>
+                <div>• What projects are in my documents?</div>
+              </div>
+            </div>
+          )
+        }
 
         {messages.map((msg, index) => (
 

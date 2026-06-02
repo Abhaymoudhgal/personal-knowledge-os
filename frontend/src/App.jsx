@@ -47,7 +47,8 @@ function App() {
 
       const aiMessage = {
         role: "assistant",
-        content: response.data.answer
+        content: response.data.answer,
+        sources: response.data.sources
       };
 
       setMessages(prev => [
@@ -81,6 +82,7 @@ function App() {
             key={index}
             className={`message ${msg.role}`}
           >
+
             <strong>
               {msg.role === "user"
                 ? "You"
@@ -90,6 +92,32 @@ function App() {
 
             {" "}
             {msg.content}
+
+            {
+              msg.sources && (
+                <div className="sources">
+
+                  <strong>Sources:</strong>
+
+                  {
+                    msg.sources.map(
+                      (source, i) => (
+
+                        <div key={i}>
+
+                          📄 {source.document}
+                          {" "}
+                          ({source.score})
+
+                        </div>
+
+                      )
+                    )
+                  }
+
+                </div>
+              )
+            }
 
           </div>
 
@@ -130,6 +158,11 @@ function App() {
 
         <button onClick={askQuestion}>
           Send
+        </button>
+        <button
+          onClick={() => setMessages([])}
+        >
+          Clear
         </button>
 
       </div>

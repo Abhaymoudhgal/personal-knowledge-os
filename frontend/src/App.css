@@ -75,3 +75,9 @@ button {
   margin-right: auto;
   background: #1e293b;
 }
+
+.sources {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}

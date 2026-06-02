@@ -202,5 +202,13 @@
   {
     "role": "assistant",
     "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
+  },
+  {
+    "role": "user",
+    "content": "What projects did he work on?"
+  },
+  {
+    "role": "assistant",
+    "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
   }
 ]

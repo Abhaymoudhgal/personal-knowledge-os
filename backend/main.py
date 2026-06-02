@@ -29,6 +29,10 @@ from backend.services.document_registry import (
 from backend.services.dashboard import (
     get_dashboard_stats
 )
+from backend.services.document_discovery import (
+    find_relevant_documents
+)
+
 
 
 
@@ -331,3 +335,15 @@ def document_stats(filename: str):
 def dashboard():
 
     return get_dashboard_stats()
+
+@app.get("/discover")
+def discover_documents(query: str):
+
+    results = find_relevant_documents(
+        query
+    )
+
+    return {
+        "query": query,
+        "documents": results
+    }

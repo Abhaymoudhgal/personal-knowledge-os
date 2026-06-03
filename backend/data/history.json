@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "role": "user",
+    "content": "What projects are listed?"
+  },
+  {
+    "role": "assistant",
+    "content": "The projects listed are:\n1.  Leaf Disease Detection\n2.  Target Classification using Belief Theory\n3.  Car Hub \u2013 Online Car Rental Platform"
+  },
+  {
+    "role": "user",
+    "content": "what is a network in CN?"
+  },
+  {
+    "role": "assistant",
+    "content": "I am sorry, but the provided context does not contain a definition for \"a network in CN\". The term \"CNN\" is mentioned in relation to a \"deep learning-based CNN model\" for leaf disease detection, but it does not define \"network\" in a general sense or \"CN\"."
+  },
+  {
+    "role": "user",
+    "content": "What is a network?"
+  },
+  {
+    "role": "assistant",
+    "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
+  }
+]

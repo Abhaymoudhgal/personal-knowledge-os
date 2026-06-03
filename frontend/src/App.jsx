@@ -8,10 +8,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [documents, setDocuments] = useState([]);
+  
+  // NEW: State for file upload
+  const [file, setFile] = useState(null);
 
   const bottomRef = useRef(null);
 
-  // NEW: Fetch both documents AND history when the app loads
   useEffect(() => {
     loadDocuments();
     loadHistory();
@@ -26,7 +28,6 @@ function App() {
     }
   };
 
-  // NEW: Function to load chat history
   const loadHistory = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/history");
@@ -38,14 +39,58 @@ function App() {
     }
   };
 
-  // NEW: Update Clear button to wipe backend memory too
   const clearChat = async () => {
     try {
       await axios.delete("http://127.0.0.1:8000/history");
-      setMessages([]); // Clear the UI after backend clears
+      setMessages([]); 
     } catch (error) {
       console.error("Error clearing history:", error);
-      setMessages([]); // Still clear UI even if backend throws an error
+      setMessages([]); 
+    }
+  };
+
+  // NEW: Upload and Index functionality restored
+  const uploadFile = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setLoading(true); // Optional: show loading state during upload
+      
+      // 1. Upload to server
+      const uploadResponse = await axios.post("http://127.0.0.1:8000/upload", formData);
+      const filename = uploadResponse.data.filename;
+
+      // 2. Index the document for RAG
+      await axios.post(`http://127.0.0.1:8000/documents/${filename}/index`);
+      
+      alert(`${filename} uploaded and indexed successfully!`);
+      
+      // 3. Refresh list and clear input
+      loadDocuments();
+      setFile(null); 
+      setLoading(false);
+      
+    } catch (error) {
+      console.error("Error during upload/index:", error);
+      alert("Failed to upload document.");
+      setLoading(false);
+    }
+  };
+
+  const deleteDocument = async (filename, e) => {
+    e.stopPropagation(); 
+    
+    if (!window.confirm(`Are you sure you want to delete ${filename}?`)) return;
+
+    try {
+      await axios.delete(`http://127.0.0.1:8000/documents/${filename}`);
+      setDocuments(prev => prev.filter(doc => doc.filename !== filename));
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      alert("Failed to delete document.");
     }
   };
 
@@ -69,9 +114,7 @@ function App() {
       setLoading(true);
 
       const response = await axios.get("http://127.0.0.1:8000/ask-kb", {
-        params: {
-          question,
-        },
+        params: { question },
       });
 
       const aiMessage = {
@@ -98,6 +141,22 @@ function App() {
           <h2>PKOS</h2>
         </div>
         
+        {/* NEW: Upload Section UI */}
+        <div className="upload-section">
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <button 
+            className="upload-btn" 
+            onClick={uploadFile}
+            disabled={!file} // Disables button if no file selected
+          >
+            Upload Document
+          </button>
+        </div>
+
         <div className="document-list-container">
           <h3 className="doc-list-title">Indexed Documents</h3>
           
@@ -107,7 +166,16 @@ function App() {
             ) : (
               documents.map((doc, index) => (
                 <div key={index} className="document-item" title={doc.filename}>
-                  📄 {doc.filename.length > 25 ? doc.filename.substring(0, 25) + "..." : doc.filename}
+                  <span className="doc-name">
+                    📄 {doc.filename.length > 20 ? doc.filename.substring(0, 20) + "..." : doc.filename}
+                  </span>
+                  <button 
+                    className="delete-doc-btn"
+                    onClick={(e) => deleteDocument(doc.filename, e)}
+                    title="Delete Document"
+                  >
+                    ✕
+                  </button>
                 </div>
               ))
             )}
@@ -174,16 +242,13 @@ function App() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                askQuestion();
-              }
+              if (e.key === "Enter") askQuestion();
             }}
             placeholder="Ask something..."
           />
           <button className="primary-btn" onClick={askQuestion}>
             Send
           </button>
-          {/* NEW: Attached the clearChat function here */}
           <button className="secondary-btn" onClick={clearChat}>
             Clear
           </button>

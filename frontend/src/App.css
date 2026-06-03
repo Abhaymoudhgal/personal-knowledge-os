@@ -54,6 +54,55 @@ body {
   text-align: center;
 }
 
+/* UPLOAD SECTION */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #1e293b;
+}
+
+input[type="file"] {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  width: 100%;
+}
+
+input[type="file"]::file-selector-button {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-right: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #334155;
+}
+
+.upload-btn {
+  background: #2563eb;
+  border-color: #2563eb;
+  width: 100%;
+  padding: 10px;
+}
+
+.upload-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.upload-btn:disabled {
+  background: #1e293b;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+
 /* --- NEW: DOCUMENT LIST UI --- */
 .document-list-container {
   display: flex;
@@ -80,24 +129,49 @@ body {
 .document-item {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* NEW: Pushes name left, button right */
   height: 44px;
-  padding: 0 14px;
+  padding: 0 10px 0 14px; /* Adjusted padding to fit button nicely */
   margin-bottom: 8px;
   border-radius: 8px;
   background: #0f172a;
   border: 1px solid #1e293b;
   font-size: 0.9rem;
   color: #cbd5e1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  cursor: default; /* Changed to default since we aren't clicking them yet */
   transition: 0.2s;
 }
 
 .document-item:hover {
   background: #1e293b;
   color: #f8fafc;
+}
+
+.doc-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1; /* Ensures the text takes up available space but respects the button */
+  margin-right: 10px;
+}
+
+/* NEW: Delete Button Styling */
+.delete-doc-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-doc-btn:hover {
+  background: #ef4444; /* Danger red */
+  color: white;
 }
 
 .no-docs-msg {

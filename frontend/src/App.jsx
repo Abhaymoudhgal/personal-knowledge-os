@@ -7,22 +7,17 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  
-  // NEW: State to hold the documents
   const [documents, setDocuments] = useState([]);
 
   const bottomRef = useRef(null);
 
-  // NEW: Fetch documents when the app loads
   useEffect(() => {
     loadDocuments();
   }, []);
 
-  // NEW: Function to grab the list from your backend
   const loadDocuments = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/documents");
-      // Assuming your backend returns { documents: [{ filename: "..." }, ...] }
       setDocuments(response.data.documents || []); 
     } catch (error) {
       console.error("Error fetching documents:", error);
@@ -54,9 +49,11 @@ function App() {
         },
       });
 
+      // NEW: We are now capturing the sources from the backend
       const aiMessage = {
         role: "assistant",
         content: response.data.answer,
+        sources: response.data.sources || [], 
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -77,7 +74,6 @@ function App() {
           <h2>PKOS</h2>
         </div>
         
-        {/* NEW: Document List UI */}
         <div className="document-list-container">
           <h3 className="doc-list-title">Indexed Documents</h3>
           
@@ -95,7 +91,7 @@ function App() {
         </div>
       </div>
 
-      {/* MAIN CONTENT (Completely Untouched) */}
+      {/* MAIN CONTENT */}
       <div className="main-content">
         <div className="top-bar">
           <button
@@ -125,6 +121,20 @@ function App() {
             <div key={index} className={`message ${msg.role}`}>
               <strong>{msg.role === "user" ? "You" : "PKOS"}:</strong>{" "}
               {msg.content}
+              
+              {/* NEW: Render sources if they exist */}
+              {msg.sources && msg.sources.length > 0 && (
+                <div className="sources">
+                  <strong>Sources:</strong>
+                  {msg.sources.map((source, i) => (
+                    <div key={i} className="source-item">
+                      📄 {source.document || source.filename || "Unknown Document"}
+                      {/* Optional: Add score if your backend returns it */}
+                      {source.score && ` (Confidence: ${source.score})`}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 

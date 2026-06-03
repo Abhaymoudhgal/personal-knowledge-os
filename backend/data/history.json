@@ -226,5 +226,13 @@
   {
     "role": "assistant",
     "content": "Abhay G Moudhgal:\n*   \"Designed and implemented algorithms to classify flying objects (missile, satellite, aircraft, unknown) using Belief Theory (Transferable Belief Model).\"\n*   \"Worked extensively on radar trajectory data processing, trajectory modeling, feature extraction, and uncertainty handling using MATLAB and Python.\"\n*   \"Improved classification robustness through belief mass function modeling and force-based trajectory analysis.\""
+  },
+  {
+    "role": "user",
+    "content": "What projects are listed?"
+  },
+  {
+    "role": "assistant",
+    "content": "The projects listed are:\n*   \"Leaf Disease Detection\"\n*   \"Target Classification using Belief Theory\"\n*   \"Car Hub \u2013 Online Car Rental Platform\""
   }
 ]

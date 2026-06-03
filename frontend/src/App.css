@@ -310,6 +310,41 @@ button {
   50% { opacity: 1; }
 }
 
+/* --- NEW: SOURCES UI --- */
+.sources {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #334155;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sources strong {
+  color: #cbd5e1 !important;
+  margin-bottom: 4px;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.source-item {
+  display: flex;
+  align-items: center;
+  background: #020617;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+  word-break: break-all;
+}
+/* ----------------------- */
+
+
+
 /* SCROLLBAR */
 ::-webkit-scrollbar {
   width: 6px;

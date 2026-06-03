@@ -218,5 +218,13 @@
   {
     "role": "assistant",
     "content": "Abhay interned at:\n*   \"Defence Research and Development Organisation (DRDO), Bengaluru\"\n*   \"Bharat Electronic Limited (BEL), Bengaluru\""
+  },
+  {
+    "role": "user",
+    "content": "what did abhay do in drdo?"
+  },
+  {
+    "role": "assistant",
+    "content": "Abhay G Moudhgal:\n*   \"Designed and implemented algorithms to classify flying objects (missile, satellite, aircraft, unknown) using Belief Theory (Transferable Belief Model).\"\n*   \"Worked extensively on radar trajectory data processing, trajectory modeling, feature extraction, and uncertainty handling using MATLAB and Python.\"\n*   \"Improved classification robustness through belief mass function modeling and force-based trajectory analysis.\""
   }
 ]

@@ -1,4 +1,4 @@
-/* GLOBAL RESETS (Fixes the 100% Zoom bug) */
+/* GLOBAL RESETS */
 * {
   margin: 0;
   padding: 0;
@@ -46,25 +46,67 @@ body {
 }
 
 .sidebar-header h2 {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: #f8fafc;
   margin-bottom: 24px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
   text-align: center;
 }
 
-.sidebar-info p {
-  color: #94a3b8;
+/* --- NEW: DOCUMENT LIST UI --- */
+.document-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.doc-list-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.document-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
   font-size: 0.9rem;
-  line-height: 1.5;
+  color: #cbd5e1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: default; /* Changed to default since we aren't clicking them yet */
+  transition: 0.2s;
+}
+
+.document-item:hover {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.no-docs-msg {
+  color: #64748b;
+  font-size: 0.9rem;
   text-align: center;
   margin-top: 20px;
-  padding: 15px;
-  background: #0f172a;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
 }
+/* ----------------------------- */
 
 /* MAIN CONTENT */
 .main-content {
@@ -87,7 +129,7 @@ body {
 }
 
 .top-bar h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #f8fafc;
   letter-spacing: 1px;

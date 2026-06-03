@@ -11,8 +11,10 @@ function App() {
 
   const bottomRef = useRef(null);
 
+  // NEW: Fetch both documents AND history when the app loads
   useEffect(() => {
     loadDocuments();
+    loadHistory();
   }, []);
 
   const loadDocuments = async () => {
@@ -21,6 +23,29 @@ function App() {
       setDocuments(response.data.documents || []); 
     } catch (error) {
       console.error("Error fetching documents:", error);
+    }
+  };
+
+  // NEW: Function to load chat history
+  const loadHistory = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/history");
+      if (response.data.history && response.data.history.length > 0) {
+        setMessages(response.data.history);
+      }
+    } catch (error) {
+      console.error("Error fetching history:", error);
+    }
+  };
+
+  // NEW: Update Clear button to wipe backend memory too
+  const clearChat = async () => {
+    try {
+      await axios.delete("http://127.0.0.1:8000/history");
+      setMessages([]); // Clear the UI after backend clears
+    } catch (error) {
+      console.error("Error clearing history:", error);
+      setMessages([]); // Still clear UI even if backend throws an error
     }
   };
 
@@ -49,7 +74,6 @@ function App() {
         },
       });
 
-      // NEW: We are now capturing the sources from the backend
       const aiMessage = {
         role: "assistant",
         content: response.data.answer,
@@ -122,14 +146,12 @@ function App() {
               <strong>{msg.role === "user" ? "You" : "PKOS"}:</strong>{" "}
               {msg.content}
               
-              {/* NEW: Render sources if they exist */}
               {msg.sources && msg.sources.length > 0 && (
                 <div className="sources">
                   <strong>Sources:</strong>
                   {msg.sources.map((source, i) => (
                     <div key={i} className="source-item">
                       📄 {source.document || source.filename || "Unknown Document"}
-                      {/* Optional: Add score if your backend returns it */}
                       {source.score && ` (Confidence: ${source.score})`}
                     </div>
                   ))}
@@ -161,7 +183,8 @@ function App() {
           <button className="primary-btn" onClick={askQuestion}>
             Send
           </button>
-          <button className="secondary-btn" onClick={() => setMessages([])}>
+          {/* NEW: Attached the clearChat function here */}
+          <button className="secondary-btn" onClick={clearChat}>
             Clear
           </button>
         </div>

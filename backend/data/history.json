@@ -70,5 +70,29 @@
   {
     "role": "assistant",
     "content": "AdaptaKV is a single-binary replicated key-value store that dynamically rewrites its own quorum policy at runtime via a gRPC control plane, without restarting nodes. This makes it novel compared to existing production KV stores, which commit to a single consistency model at deploy time; AdaptaKV makes the quorum policy a live, observable variable.\n\nIt addresses the real-world need to balance speed and correctness during transient network failures, particularly in systems like e-commerce, banking, and ticket-booking that experience transaction isolation and replication anomalies under concurrent load. AdaptaKV integrates four core subsystems:\n1.  **Multi-Session KV Node (Go)**: A multi-node key-value store with active replication across nodes.\n2.  **Toggle Mode**: A runtime switch between CP mode (consistency priority) and AP mode (availability priority) with near-to-zero downtime. AdaptaKV's own mode toggle is strongly consistent.\n3.  **Partition Simulation**: Simulates network partitions (latency / packet loss) and observes divergence in state across replicas.\n4.  **Measure Latency vs Correctness**: Instruments both read/write latency and stale-read anomaly counts (Divergence Index) under partition.\n\nKey technologies used in AdaptaKV:\n*   **Go + RocksDB + slog**: Each node is one Go binary. RocksDB stores KV pairs with WAL, and slog emits JSON logs `{key, before, after, hlc, mode}` on every write, serving as the WAL equivalent for the Correctness Scorer.\n*   **etcd**: Watches let every KV node react to mode key changes within milliseconds, and etcd leases detect node failures, triggering automatic quorum recalculation.\n*   **NATS JetStream**: Carries replication events with HLC timestamps. When a node is partitioned and reconnects, it replays all missed JetStream events in HLC order.\n*   **Prometheus and Grafana**: The Divergence Index (DI), calculated as `DI = (number of replicas whose value differs from primary) / N`, is exposed as a Prometheus gauge and graphed live in Grafana alongside `write_latency_p99`, giving operators a numeric handle on the consistency-latency trade-off.\n*   **Toxiproxy TCP injection**: Used to reproduce deterministic partitions."
+  },
+  {
+    "role": "user",
+    "content": "tools in adaptakv?"
+  },
+  {
+    "role": "assistant",
+    "content": "The tools used in AdaptaKV include:\n*   **Go + RocksDB + slog**: \"Each node is one Go binary. RocksDB stores KV pairs with WAL, and slog emits JSON logs `{key, before, after, hlc, mode}` on every write, serving as the WAL equivalent for the Correctness Scorer.\"\n*   **etcd**: \"Watches let every KV node react to mode key changes within milliseconds, and etcd leases detect node failures, triggering automatic quorum recalculation.\"\n*   **NATS JetStream**: \"Carries replication events with HLC timestamps. When a node is partitioned and reconnects, it replays all missed JetStream events in HLC order.\"\n*   **Prometheus and Grafana**: \"The Divergence Index (DI)... is exposed as a Prometheus gauge and graphed live in Grafana alongside `write_latency_p99`.\"\n*   **Toxiproxy TCP injection**: \"Used to reproduce deterministic partitions.\"\n*   **Docker + Docker Compose**: \"docker-compose.yml defines all 8 services: kv-node-a/b/c, toxiproxy, nats, etcd, prometheus, grafana \u2014 one file to rule them all. docker compose up reproduces the full 8-container cluster on any machine without manual installs or environment setup.\""
+  },
+  {
+    "role": "user",
+    "content": "what is network in CN?"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the provided context, a network in \"CN\" (Computer Networks) can be described as follows:\n\n\"Compu kee Nekworks i ee : WPred / Wrre less | \u201cNodes\u201d \u201c Communtcalien \u201d Ofgrtal \u2019 pate exchange [ teamsfee [hast \" as Resource Shaving\"\"\n\nAdditionally, the context defines \"Nodes\" within this context:\n\"\u00b0 Basic Terminologtes\n* Nodes: Cornpulte, potnkt, Servee, Rouble, de.\""
+  },
+  {
+    "role": "user",
+    "content": "what is udp?"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the provided context, UDP (User Datagram Protocol) is described as follows:\n\n*   **Uses Datagram Protocol (UDP)**\n*   **Connection/less**\n*   **Unreliable**\n*   **Stateless** (No information saving is happening)\n*   It works for Multicast/Broadcast.\n*   It is used in applications like \"Games, multimedia where speed is required\".\n*   It includes a **Header checksum (16 bit)**."
   }
 ]

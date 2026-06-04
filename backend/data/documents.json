@@ -6,15 +6,15 @@
     "uploaded_at": "2026-06-02T18:12:38.925093"
   },
   {
-    "filename": "CN_notes.pdf",
-    "chunks": 0,
-    "indexed": true,
-    "uploaded_at": "2026-06-04T23:21:25.135090"
-  },
-  {
     "filename": "exp3_report.pdf",
     "chunks": 49,
     "indexed": true,
     "uploaded_at": "2026-06-04T23:26:36.942213"
+  },
+  {
+    "filename": "CN_notes.pdf",
+    "chunks": 60,
+    "indexed": true,
+    "uploaded_at": "2026-06-04T23:53:25.486248"
   }
 ]

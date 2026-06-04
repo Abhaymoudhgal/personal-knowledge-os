@@ -22,5 +22,53 @@
   {
     "role": "assistant",
     "content": "\nGemini quota exceeded.\n\nYour vector search and retrieval are working correctly,\nbut the language model is temporarily unavailable.\n\nPlease wait a few minutes or use a different Gemini API key.\n"
+  },
+  {
+    "role": "user",
+    "content": "What projects are listed?"
+  },
+  {
+    "role": "assistant",
+    "content": "The projects listed are:\n1. Leaf Disease Detection\n2. Target Classification using Belief Theory\n3. Car Hub \u2013 Online Car Rental Platform"
+  },
+  {
+    "role": "user",
+    "content": "What is a network?"
+  },
+  {
+    "role": "assistant",
+    "content": "I am sorry, but the provided context does not contain a definition for \"a network\"."
+  },
+  {
+    "role": "user",
+    "content": "where did abhay intern"
+  },
+  {
+    "role": "assistant",
+    "content": "Abhay interned at:\n1. Defence Research and Development Organisation (DRDO), Bengaluru (Feb 2025 - May 2025)\n2. Bharat Electronic Limited (BEL), Bengaluru (Oct 2023 - Nov 2023)"
+  },
+  {
+    "role": "user",
+    "content": "What is a network in CN?"
+  },
+  {
+    "role": "assistant",
+    "content": "I am sorry, but the provided context does not contain a definition for \"a network in CN\". The term \"CNN\" is mentioned in relation to a \"deep learning-based CNN model\" for leaf disease detection, but it does not define \"network\" in a general sense or \"CN\"."
+  },
+  {
+    "role": "user",
+    "content": "What is a network in CN?"
+  },
+  {
+    "role": "assistant",
+    "content": "I am sorry, but the provided context does not contain a definition for \"a network in CN\". The term \"CNN\" is mentioned in relation to a \"deep learning-based CNN model\" for leaf disease detection, but it does not define \"network\" in a general sense or \"CN\"."
+  },
+  {
+    "role": "user",
+    "content": "explain about AdaptaKV"
+  },
+  {
+    "role": "assistant",
+    "content": "AdaptaKV is a single-binary replicated key-value store that dynamically rewrites its own quorum policy at runtime via a gRPC control plane, without restarting nodes. This makes it novel compared to existing production KV stores, which commit to a single consistency model at deploy time; AdaptaKV makes the quorum policy a live, observable variable.\n\nIt addresses the real-world need to balance speed and correctness during transient network failures, particularly in systems like e-commerce, banking, and ticket-booking that experience transaction isolation and replication anomalies under concurrent load. AdaptaKV integrates four core subsystems:\n1.  **Multi-Session KV Node (Go)**: A multi-node key-value store with active replication across nodes.\n2.  **Toggle Mode**: A runtime switch between CP mode (consistency priority) and AP mode (availability priority) with near-to-zero downtime. AdaptaKV's own mode toggle is strongly consistent.\n3.  **Partition Simulation**: Simulates network partitions (latency / packet loss) and observes divergence in state across replicas.\n4.  **Measure Latency vs Correctness**: Instruments both read/write latency and stale-read anomaly counts (Divergence Index) under partition.\n\nKey technologies used in AdaptaKV:\n*   **Go + RocksDB + slog**: Each node is one Go binary. RocksDB stores KV pairs with WAL, and slog emits JSON logs `{key, before, after, hlc, mode}` on every write, serving as the WAL equivalent for the Correctness Scorer.\n*   **etcd**: Watches let every KV node react to mode key changes within milliseconds, and etcd leases detect node failures, triggering automatic quorum recalculation.\n*   **NATS JetStream**: Carries replication events with HLC timestamps. When a node is partitioned and reconnects, it replays all missed JetStream events in HLC order.\n*   **Prometheus and Grafana**: The Divergence Index (DI), calculated as `DI = (number of replicas whose value differs from primary) / N`, is exposed as a Prometheus gauge and graphed live in Grafana alongside `write_latency_p99`, giving operators a numeric handle on the consistency-latency trade-off.\n*   **Toxiproxy TCP injection**: Used to reproduce deterministic partitions."
   }
 ]
